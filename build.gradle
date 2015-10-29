@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+// sourceCompatibility = 1.7
+
+repositories {
+  flatDir { dirs 'libs' }
+}
+
+buildscript {
+    repositories {
+        flatDir { dirs 'libs' }
+    }
+    dependencies {
+        classpath ':proguard-5.2.1:'
+    }
+}
+
+// https://github.com/loopj/proguard-gradle-example
+task proguardJar(type: proguard.gradle.ProGuardTask, dependsOn: jar) {
+    configuration 'proguard-rules.pro'
+    injars jar.archivePath
+    outjars "$jar.destinationDir/shrunk.jar"
+    printusage "$project.buildDir/deadcode.txt"
+}
